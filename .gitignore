@@ -1,0 +1,11 @@
+
+# Next.js and local development
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+.env*
+!.env.example
+.DS_Store
+coverage/
+
