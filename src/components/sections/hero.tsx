@@ -1,36 +1,57 @@
 import Image from "next/image";
-import { ShortlistButton } from "./shortlist-button";
+import { buttonVariants } from "@/components/ui/button";
+import { Eyebrow } from "@/components/ui/eyebrow";
+import { Icon } from "@/components/ui/icon";
+import { cn } from "@/lib/cn";
 
 export function Hero() {
   return (
-    <section className="hero wrap" aria-labelledby="hero-title">
-      <div className="hero-copy">
-        <p className="eyebrow">
-          <span className="tiny-line"></span> FROM INDIA, WITH LOVE
-        </p>
-        <h1 id="hero-title">
+    <section
+      className="page-wrap grid grid-cols-[1fr_1.04fr] items-center gap-13.25 pt-13.25 pb-11.5 max-lg:gap-8.75 max-md:gap-6.25 max-md:pt-10.75 max-sm:grid-cols-1 max-sm:gap-7.25 max-sm:pt-9 max-sm:pb-7 xl:gap-20 xl:pt-16 xl:pb-13.75"
+      aria-labelledby="hero-title"
+    >
+      <div>
+        <Eyebrow className="flex items-center gap-2.5 max-md:text-[7px] max-md:tracking-[1.5px] max-sm:text-[8px] max-sm:tracking-[1.6px]">
+          <span className="h-px w-6.5 bg-[#a57a64]" /> FROM INDIA, WITH LOVE
+        </Eyebrow>
+        <h1
+          id="hero-title"
+          className="my-6.5 text-[clamp(64px,6.6vw,94px)] leading-[0.99] font-medium tracking-[-3.7px] text-wine max-lg:text-[74px] max-md:text-[clamp(51px,7.7vw,63px)] max-md:tracking-[-2.7px] max-sm:my-5 max-sm:text-[73px] max-sm:tracking-[-3px] max-xs:text-[63px] xl:text-[101px]"
+        >
           Little finds.
           <br />
           <em>Lovely</em> living.
         </h1>
-        <p className="hero-description">
+        <p className="max-w-92 text-[13px] leading-[1.9] text-muted max-lg:text-[12px] max-sm:max-w-80">
           A touch of colour. A little everyday joy.
-          <br />
-          Discover lovely finds from India, brought closer to home in Sri Lanka.
+          <br className="max-md:hidden" /> Discover lovely finds from India,
+          brought closer to home in Sri Lanka.
         </p>
-        <div className="hero-actions">
-          <a className="button button-primary" href="#collection">
-            Explore the collection{" "}
-            <svg>
-              <use href="#i-diagonal" />
-            </svg>
+        <div className="mt-7.75 flex flex-wrap items-center gap-6 max-lg:gap-4.5 max-md:mt-6 max-md:gap-3.25 max-sm:gap-6 max-xs:gap-4.5">
+          <a
+            href="#collection"
+            className={cn(
+              buttonVariants(),
+              "max-lg:px-4.5 max-lg:text-[10px] max-sm:min-h-12 max-sm:px-5.25 max-sm:py-3.25 max-xs:px-4 max-xs:text-[9px]",
+            )}
+          >
+            Explore the collection <Icon name="diagonal" />
           </a>
-          <a className="text-link" href="#story">
+          <a
+            href="#story"
+            className={cn(
+              buttonVariants({ variant: "link" }),
+              "max-md:text-[10px] max-sm:text-[11px]",
+            )}
+          >
             Meet M&T <span aria-hidden="true">→</span>
           </a>
         </div>
-        <div className="hero-footnote">
-          <span className="small-flower" aria-hidden="true">
+        <div className="mt-10.25 flex items-center gap-3 text-[10px] leading-[1.6] text-muted max-md:mt-7 max-md:text-[9px] max-sm:hidden">
+          <span
+            className="text-[33px] leading-none text-[#ac7669]"
+            aria-hidden="true"
+          >
             ✳
           </span>
           <span>
@@ -40,276 +61,58 @@ export function Hero() {
           </span>
         </div>
       </div>
-      <div className="hero-visual">
-        <div className="hero-arch-outline" aria-hidden="true"></div>
-        <div className="hero-photo">
+      <div className="relative min-w-0 pt-2 max-sm:mx-auto max-sm:w-[calc(100%-10px)] max-sm:pt-1">
+        <div
+          className="pointer-events-none absolute inset-[-3px_10px_28px_-12px] -rotate-2 rounded-[190px_190px_4px_4px] border border-[#d2beb0] max-sm:inset-[-5px_8px_24px_-8px] max-sm:rounded-[160px_160px_3px_3px]"
+          aria-hidden="true"
+        />
+        <div className="group/photo relative aspect-[1.055] overflow-hidden rounded-[180px_180px_4px_4px] bg-[#e6c6ab] after:pointer-events-none after:absolute after:inset-[55%_0_0] after:bg-[linear-gradient(transparent,rgba(30,20,13,0.6))] max-lg:aspect-[0.92] max-md:aspect-[0.78] max-md:rounded-[150px_150px_3px_3px] max-sm:aspect-[1.12] max-sm:rounded-[140px_140px_3px_3px] xl:aspect-[1.08]">
           <Image
             src="/assets/hero.webp"
             alt="Illustrative boutique campaign: a woman wearing a sage floral kurta in a sunlit Indian courtyard"
             width={1536}
             height={1024}
-            priority
+            preload
             sizes="(max-width: 600px) 100vw, 50vw"
+            className="object-[60%_50%] transition-transform duration-1000 group-hover/photo:scale-[1.025] max-sm:object-[60%_46%]"
           />
-          <div className="photo-caption">
+          <div className="absolute right-6.5 bottom-6.25 left-7.25 z-1 flex items-end justify-between text-white max-md:right-4.5 max-md:bottom-5 max-md:left-5 max-sm:inset-x-5.75 max-sm:bottom-5.75">
             <div>
-              <span>THE EVERYDAY EDIT</span>
-              <p>
+              <span className="text-[8px] tracking-[2px] max-md:text-[7px]">
+                THE EVERYDAY EDIT
+              </span>
+              <p className="mt-1.75 font-serif text-[29px] leading-[1.06] max-md:text-[25px] max-sm:text-[26px]">
                 A little colour.
                 <br />A lot of character.
               </p>
             </div>
             <a
               href="#collection"
-              className="circle-link"
+              className="flex size-9.75 items-center justify-center rounded-full border border-[#fff8] text-white hover:bg-[#fff3] max-md:size-7.75"
               aria-label="Discover the everyday edit"
             >
-              <svg>
-                <use href="#i-diagonal" />
-              </svg>
+              <Icon name="diagonal" className="size-4.75" />
             </a>
           </div>
         </div>
-        <div className="hero-seal" aria-label="The M and T edit">
-          <span>THE M&T EDIT</span>
-          <svg>
-            <use href="#i-flower" />
-          </svg>
-          <em>lovely little finds</em>
+        <div
+          className="absolute top-5 -right-6.25 flex size-26.5 rotate-[11deg] flex-col items-center justify-center gap-1.5 rounded-full bg-[#ece8d9] text-wine shadow-[0_0_0_5px_var(--color-cream)] after:absolute after:inset-1.5 after:rounded-full after:border after:border-dashed after:border-[#a8987f] max-lg:-right-3.75 max-lg:size-22.5 max-md:top-4 max-md:-right-2.5 max-md:size-19.75 max-md:gap-0.75 max-sm:top-2.5 max-sm:-right-2.25 max-sm:size-20.5 max-xs:size-18.5"
+          aria-label="The M and T edit"
+        >
+          <span className="text-[7px] tracking-[1.6px] max-lg:text-[6px] max-md:text-[5px] max-sm:text-[5.5px]">
+            THE M&T EDIT
+          </span>
+          <Icon name="flower" className="size-6.75 stroke-1 max-md:size-5.5" />
+          <em className="font-serif text-[12px] max-md:text-[10px]">
+            lovely little finds
+          </em>
         </div>
-        <div className="image-note">
+        <div className="mt-4.25 flex justify-between gap-3.75 font-serif text-[11px] text-muted italic max-sm:mt-3.25 max-sm:text-[10px]">
           A mood, a moment, a little inspiration.{" "}
-          <span>01 / THE EVERYDAY EDIT</span>
+          <span className="pt-0.75 font-sans text-[7px] tracking-[1px] not-italic max-lg:hidden max-sm:block max-sm:text-[5.5px] max-xs:hidden">
+            01 / THE EVERYDAY EDIT
+          </span>
         </div>
-      </div>
-    </section>
-  );
-}
-
-export function ValuesBand() {
-  return (
-    <section className="values-band" aria-label="The M and T approach">
-      <div className="wrap values-grid">
-        <div>
-          <svg>
-            <use href="#i-box" />
-          </svg>
-          <p>
-            <strong>Sourced in India</strong>
-            <span>Brought closer to Sri Lanka</span>
-          </p>
-        </div>
-        <div>
-          <svg>
-            <use href="#i-flower" />
-          </svg>
-          <p>
-            <strong>Little things, lovely living</strong>
-            <span>Style for you and your space</span>
-          </p>
-        </div>
-        <div>
-          <svg>
-            <use href="#i-heart" />
-          </svg>
-          <p>
-            <strong>A personal way to shop</strong>
-            <span>Find it. Save it. Ask us about it.</span>
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-export function Story() {
-  return (
-    <section className="story-section" id="story" aria-labelledby="story-title">
-      <div className="story-inner wrap">
-        <div className="story-title">
-          <p className="eyebrow">TWO PLACES. ONE LITTLE STORE.</p>
-          <h2 id="story-title">
-            From India,
-            <br />
-            <em>with love.</em>
-            <span className="story-flower" aria-hidden="true">
-              ✳
-            </span>
-          </h2>
-          <div className="origin-line">
-            <span>INDIA</span>
-            <span className="origin-route" aria-hidden="true">
-              ✧ <i></i> →
-            </span>
-            <span>SRI LANKA</span>
-          </div>
-        </div>
-        <div className="story-copy">
-          <h3>
-            Good finds have a way
-            <br />
-            of making a day feel better.
-          </h3>
-          <p>
-            A favourite outfit. A finishing touch. Something lovely for your
-            home. We believe the little things deserve a little attention.
-          </p>
-          <p>
-            M&T brings goods sourced in India to shoppers in Sri Lanka. A small
-            store with a simple idea: bring the things you love a little closer.
-          </p>
-          <a className="text-link" href="#how-to-order">
-            A little about how we work{" "}
-            <svg>
-              <use href="#i-arrow" />
-            </svg>
-          </a>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-export function HowToOrder() {
-  return (
-    <section
-      className="how-section wrap"
-      id="how-to-order"
-      aria-labelledby="how-title"
-    >
-      <div className="how-intro">
-        <p className="eyebrow">FROM FINDING TO FAVOURITE</p>
-        <h2 id="how-title">
-          Shopping, with
-          <br />a <em>personal touch.</em>
-        </h2>
-        <p>
-          Start with what catches your eye.
-          <br />
-          We’ll take it one little step at a time.
-        </p>
-        <ShortlistButton className="text-link">
-          Make your little list{" "}
-          <svg>
-            <use href="#i-arrow" />
-          </svg>
-        </ShortlistButton>
-      </div>
-      <div className="steps">
-        <article>
-          <span className="step-number">01</span>
-          <div>
-            <h3>Find something you love</h3>
-            <p>
-              Explore the collection and add your favourites to an enquiry
-              shortlist. Your list stays saved in this browser.
-            </p>
-          </div>
-          <svg>
-            <use href="#i-heart" />
-          </svg>
-        </article>
-        <article>
-          <span className="step-number">02</span>
-          <div>
-            <h3>Let’s talk about the details</h3>
-            <p>
-              Prepare a message with your list. Ask M&T to confirm the actual
-              product, price in LKR, size, and availability.
-            </p>
-          </div>
-          <svg>
-            <use href="#i-sun" />
-          </svg>
-        </article>
-        <article>
-          <span className="step-number">03</span>
-          <div>
-            <h3>Make it yours</h3>
-            <p>
-              Confirm payment and delivery arrangements with M&T before
-              ordering. Adding to your list does not place an order.
-            </p>
-          </div>
-          <svg>
-            <use href="#i-bag" />
-          </svg>
-        </article>
-      </div>
-    </section>
-  );
-}
-
-export function FrequentlyAskedQuestions() {
-  return (
-    <section className="faq-section wrap" aria-labelledby="faq-title">
-      <div>
-        <p className="eyebrow">THE LITTLE DETAILS</p>
-        <h2 id="faq-title">Good questions.</h2>
-      </div>
-      <div className="faqs">
-        <details>
-          <summary>
-            Can I order these products right now?
-            <svg>
-              <use href="#i-plus" />
-            </svg>
-          </summary>
-          <p>
-            This is a first look at the M&T storefront. The products and
-            photography are illustrative. Actual inventory, prices, and ordering
-            contact details are still to be added. You can explore and prepare a
-            shortlist, but this site does not take orders or payments.
-          </p>
-        </details>
-        <details>
-          <summary>
-            How will I know the final price?
-            <svg>
-              <use href="#i-plus" />
-            </svg>
-          </summary>
-          <p>
-            Ask M&T to confirm the product price in Sri Lankan rupees (LKR), any
-            delivery charge, and the total before agreeing to an order. No
-            prices or delivery fees have been set in this sample collection.
-          </p>
-        </details>
-        <details>
-          <summary>
-            What about delivery and returns?
-            <svg>
-              <use href="#i-plus" />
-            </svg>
-          </summary>
-          <p>
-            Delivery areas, timelines, payment methods, and the returns policy
-            will be confirmed by M&T. Check these details before placing an
-            order; they are not yet published here.
-          </p>
-        </details>
-      </div>
-    </section>
-  );
-}
-
-export function ClosingBanner() {
-  return (
-    <section className="closing-banner">
-      <div className="wrap">
-        <span className="closing-flower" aria-hidden="true">
-          ✳
-        </span>
-        <div>
-          <p className="eyebrow">SOMETHING CAUGHT YOUR EYE?</p>
-          <h2>Start a lovely little list.</h2>
-        </div>
-        <ShortlistButton className="button button-primary">
-          Open my shortlist{" "}
-          <svg>
-            <use href="#i-diagonal" />
-          </svg>
-        </ShortlistButton>
       </div>
     </section>
   );

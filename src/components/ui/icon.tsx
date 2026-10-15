@@ -13,18 +13,26 @@ export type IconName =
   | "menu"
   | "copy";
 
-export function Icon({ name }: { name: IconName }) {
+/** Renders a symbol from <IconSprite />. Size it with size-* utilities. */
+export function Icon({
+  name,
+  className,
+}: {
+  name: IconName;
+  className?: string;
+}) {
   return (
-    <svg aria-hidden="true">
+    <svg aria-hidden="true" className={className}>
       <use href={`#i-${name}`} />
     </svg>
   );
 }
 
+/** Inline SVG sprite; render once per page. */
 export function IconSprite() {
   return (
     <svg
-      className="svg-sprite"
+      className="absolute size-0 overflow-hidden"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
     >

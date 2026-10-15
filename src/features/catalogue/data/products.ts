@@ -1,15 +1,4 @@
-export type Category =
-  "Clothing" | "Accessories" | "Jewellery" | "Home & living";
-export type CollectionFilter = "all" | "saved" | "accessories-all" | Category;
-
-export interface Product {
-  id: string;
-  name: string;
-  category: Category;
-  keywords: string;
-  description: string;
-  image: { src: string; alt: string; quadrant?: 0 | 1 | 2 | 3 };
-}
+import type { Product } from "../types";
 
 // Illustrative catalogue only. Replace these entries with verified inventory.
 // Omit image.quadrant when using an individual product photograph.
@@ -67,45 +56,3 @@ export const products: readonly Product[] = [
     },
   },
 ];
-
-export const collectionFilters: readonly {
-  value: CollectionFilter;
-  label: string;
-}[] = [
-  { value: "all", label: "All finds" },
-  { value: "Clothing", label: "Clothing" },
-  { value: "Accessories", label: "Accessories" },
-  { value: "Jewellery", label: "Jewellery" },
-  { value: "Home & living", label: "Home & living" },
-  { value: "saved", label: "Saved" },
-];
-
-export function findProduct(id: string) {
-  return products.find((product) => product.id === id);
-}
-
-export function filterProducts(
-  filter: CollectionFilter,
-  favourites: readonly string[],
-) {
-  return products.filter(
-    (product) =>
-      filter === "all" ||
-      (filter === "saved"
-        ? favourites.includes(product.id)
-        : filter === "accessories-all"
-          ? ["Accessories", "Jewellery"].includes(product.category)
-          : product.category === filter),
-  );
-}
-
-export function searchProducts(query: string) {
-  const words = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
-  return products.filter((product) =>
-    words.every((word) =>
-      `${product.name} ${product.category} ${product.keywords}`
-        .toLowerCase()
-        .includes(word),
-    ),
-  );
-}

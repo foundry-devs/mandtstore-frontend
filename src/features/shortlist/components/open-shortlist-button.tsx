@@ -1,23 +1,26 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useStorefront } from "./storefront-provider";
+import { Button } from "@/components/ui/button";
+import { useModal } from "@/providers/modal-provider";
 
-export function ShortlistButton({
+export function OpenShortlistButton({
   children,
-  className = "text-link",
+  variant = "link",
+  className,
 }: {
   children: ReactNode;
+  variant?: "primary" | "link";
   className?: string;
 }) {
-  const { openModal } = useStorefront();
+  const { openModal } = useModal();
   return (
-    <button
-      type="button"
+    <Button
+      variant={variant}
       className={className}
       onClick={() => openModal({ kind: "shortlist" })}
     >
       {children}
-    </button>
+    </Button>
   );
 }

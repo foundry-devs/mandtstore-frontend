@@ -1,39 +1,21 @@
-import { Collection } from "@/components/collection";
-import {
-  Hero,
-  ValuesBand,
-  Story,
-  HowToOrder,
-  FrequentlyAskedQuestions,
-  ClosingBanner,
-} from "@/components/content-sections";
-import { IconSprite } from "@/components/icons";
-import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
-import { StorefrontDialogs } from "@/components/storefront-dialogs";
-import { StorefrontProvider } from "@/components/storefront-provider";
+import { ClosingBanner } from "@/components/sections/closing-banner";
+import { Faq } from "@/components/sections/faq";
+import { Hero } from "@/components/sections/hero";
+import { HowToOrder } from "@/components/sections/how-to-order";
+import { Story } from "@/components/sections/story";
+import { ValuesBand } from "@/components/sections/values-band";
+import { Collection } from "@/features/collection";
 
 export default function HomePage() {
   return (
     <>
-      <a className="skip-link" href="#main">
-        Skip to content
-      </a>
-      <IconSprite />
-      <StorefrontProvider>
-        <SiteHeader />
-        <main id="main">
-          <Hero />
-          <ValuesBand />
-          <Collection />
-          <Story />
-          <HowToOrder />
-          <FrequentlyAskedQuestions />
-          <ClosingBanner />
-        </main>
-        <SiteFooter />
-        <StorefrontDialogs />
-      </StorefrontProvider>
+      <Hero />
+      <ValuesBand />
+      <Collection />
+      <Story />
+      <HowToOrder />
+      <Faq />
+      <ClosingBanner />
     </>
   );
 }

@@ -1,22 +1,26 @@
 import type { Metadata, Viewport } from "next";
+import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 import type { ReactNode } from "react";
+import { siteConfig } from "@/config/site";
 import "./globals.css";
 
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ||
-  "https://mt-india-sri-lanka.ppathukorala.chatgpt.site";
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-cormorant",
+});
+const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans" });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
-  title: { default: "M&T — From India, with love.", template: "%s | M&T" },
-  description:
-    "Meet M&T — lovely finds sourced in India for everyday life in Sri Lanka. Explore our sample collection of clothing, accessories, jewellery and home goods.",
+  metadataBase: new URL(siteConfig.url),
+  title: { default: siteConfig.title, template: `%s | ${siteConfig.name}` },
+  description: siteConfig.description,
   icons: { icon: "/assets/favicon.svg" },
   alternates: { canonical: "/" },
   openGraph: {
-    title: "M&T — From India, with love.",
-    description:
-      "Little finds. Lovely living. Discover the M&T boutique storefront.",
+    title: siteConfig.title,
+    description: `${siteConfig.tagline} Discover the M&T boutique storefront.`,
     type: "website",
     url: "/",
     images: [
@@ -29,23 +33,11 @@ export const metadata: Metadata = {
     ],
   },
 };
-export const viewport: Viewport = { themeColor: "#612936" };
+export const viewport: Viewport = { themeColor: siteConfig.themeColor };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=DM+Sans:wght@400;450;500;550;600;650;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang="en" className={`${cormorant.variable} ${dmSans.variable}`}>
       <body>{children}</body>
     </html>
   );

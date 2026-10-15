@@ -1,36 +1,43 @@
-import { findProduct, products } from "./catalogue.ts";
-
 // Preserve the original key so existing visitors keep their saved lists.
 export const storageKey = "mt-boutique-v1";
-export interface ShoppingState {
+export const maxQuantity = 99;
+export const maxNotesLength = 1000;
+
+export interface ShortlistState {
   favourites: string[];
   bag: Record<string, number>;
   notes: string;
 }
-export const emptyShoppingState: ShoppingState = {
+export const emptyShortlistState: ShortlistState = {
   favourites: [],
   bag: {},
   notes: "",
 };
-export type ShoppingAction =
-  | { type: "restore"; state: ShoppingState }
+export type ShortlistAction =
   | { type: "toggle-favourite"; id: string }
   | { type: "add"; id: string }
   | { type: "quantity"; id: string; quantity: number }
   | { type: "remove"; id: string }
   | { type: "notes"; notes: string };
 
-export function parseShoppingState(raw: string | null): ShoppingState {
+type IsKnownProduct = (id: string) => boolean;
+
+/** Reads a saved list defensively: unknown products and bad values are dropped. */
+export function parseShortlistState(
+  raw: string | null,
+  isKnownProduct: IsKnownProduct,
+): ShortlistState {
   try {
     const value: unknown = JSON.parse(raw ?? "{}");
     if (!value || typeof value !== "object" || Array.isArray(value))
-      return emptyShoppingState;
+      return emptyShortlistState;
     const saved = value as Record<string, unknown>;
     const favourites = Array.isArray(saved.favourites)
       ? [
           ...new Set(
             saved.favourites.filter(
-              (id): id is string => typeof id === "string" && !!findProduct(id),
+              (id): id is string =>
+                typeof id === "string" && isKnownProduct(id),
             ),
           ),
         ]
@@ -41,74 +48,73 @@ export function parseShoppingState(raw: string | null): ShoppingState {
       typeof saved.bag === "object" &&
       !Array.isArray(saved.bag)
     ) {
-      const input = saved.bag as Record<string, unknown>;
-      for (const product of products) {
-        const quantity = input[product.id];
+      for (const [id, quantity] of Object.entries(saved.bag)) {
         if (
+          isKnownProduct(id) &&
           typeof quantity === "number" &&
           Number.isInteger(quantity) &&
           quantity > 0
-        ) {
-          bag[product.id] = Math.min(quantity, 99);
-        }
+        )
+          bag[id] = Math.min(quantity, maxQuantity);
       }
     }
     return {
       favourites,
       bag,
-      notes: typeof saved.notes === "string" ? saved.notes.slice(0, 1000) : "",
+      notes:
+        typeof saved.notes === "string"
+          ? saved.notes.slice(0, maxNotesLength)
+          : "",
     };
   } catch {
-    return emptyShoppingState;
+    return emptyShortlistState;
   }
 }
 
-export function shoppingReducer(
-  state: ShoppingState,
-  action: ShoppingAction,
-): ShoppingState {
-  if (action.type === "restore") return action.state;
-  if (action.type === "notes")
-    return { ...state, notes: action.notes.slice(0, 1000) };
-  if (!findProduct(action.id)) return state;
-  switch (action.type) {
-    case "toggle-favourite":
-      return {
-        ...state,
-        favourites: state.favourites.includes(action.id)
-          ? state.favourites.filter((id) => id !== action.id)
-          : [...state.favourites, action.id],
-      };
-    case "add":
-      return {
-        ...state,
-        bag: {
-          ...state.bag,
-          [action.id]: Math.min((state.bag[action.id] ?? 0) + 1, 99),
-        },
-      };
-    case "quantity": {
-      if (!state.bag[action.id] || !Number.isInteger(action.quantity))
-        return state;
-      return {
-        ...state,
-        bag: {
-          ...state.bag,
-          [action.id]: Math.max(1, Math.min(action.quantity, 99)),
-        },
-      };
+export function createShortlistReducer(isKnownProduct: IsKnownProduct) {
+  return function shortlistReducer(
+    state: ShortlistState,
+    action: ShortlistAction,
+  ): ShortlistState {
+    if (action.type === "notes")
+      return { ...state, notes: action.notes.slice(0, maxNotesLength) };
+    if (!isKnownProduct(action.id)) return state;
+    switch (action.type) {
+      case "toggle-favourite":
+        return {
+          ...state,
+          favourites: state.favourites.includes(action.id)
+            ? state.favourites.filter((id) => id !== action.id)
+            : [...state.favourites, action.id],
+        };
+      case "add":
+        return {
+          ...state,
+          bag: {
+            ...state.bag,
+            [action.id]: Math.min((state.bag[action.id] ?? 0) + 1, maxQuantity),
+          },
+        };
+      case "quantity": {
+        if (!state.bag[action.id] || !Number.isInteger(action.quantity))
+          return state;
+        return {
+          ...state,
+          bag: {
+            ...state.bag,
+            [action.id]: Math.max(1, Math.min(action.quantity, maxQuantity)),
+          },
+        };
+      }
+      case "remove": {
+        const bag = { ...state.bag };
+        delete bag[action.id];
+        return { ...state, bag };
+      }
     }
-    case "remove": {
-      const bag = { ...state.bag };
-      delete bag[action.id];
-      return { ...state, bag };
-    }
-  }
+  };
 }
 
-export function buildEnquiry(state: ShoppingState) {
-  const lines = products
-    .filter((product) => state.bag[product.id])
-    .map((product) => `• ${product.name} — quantity ${state.bag[product.id]}`);
-  return `Hi M&T! I’m interested in these styles from your sample collection:\n\n${lines.join("\n")}\n\nPlease confirm the actual products, available options, prices in LKR, delivery charges and timing, payment methods, and returns policy.${state.notes.trim() ? "\n\nMy notes: " + state.notes.trim() : ""}\n\nThis is an enquiry, not an order. Thank you!`;
+export function countItems(bag: ShortlistState["bag"]) {
+  return Object.values(bag).reduce((total, quantity) => total + quantity, 0);
 }
